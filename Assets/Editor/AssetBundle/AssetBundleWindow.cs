@@ -15,6 +15,8 @@ public class AssetBundleWindow : EditorWindow {
     private int tagIndex = 0;
     private string[] arrBuidTarget = { "Windows", "Android", "IOS" };
 
+    private bool IsRun = true;
+
     private Vector2 pos;
 
 #if UNITY_STANDALONE_WIN
@@ -32,21 +34,27 @@ public class AssetBundleWindow : EditorWindow {
     /// </summary>
     public AssetBundleWindow()
     {
-        //string path = Application.dataPath + "/Editor/AssetBundle/AssetBundleConfig.xml";
-        //dal = new AssetBundleDAL(path);
-        //mList = dal.GetList();
-        //mDic = new Dictionary<string, bool>();
-        //for(int i = 0; i < mList.Count; i++)
-        //{
-        //    mDic[mList[i].Key] = true;
-        //}
+        
     }
     /// <summary>
     /// 绘制窗口
     /// </summary>
     public void OnGUI()
     {
-        //if (mList == null) return;
+        while (IsRun)
+        {
+            string path = Application.dataPath + "/Editor/AssetBundle/AssetBundleConfig.xml";
+            dal = new AssetBundleDAL(path);
+            mList = dal.GetList();
+            mDic = new Dictionary<string, bool>();
+            for (int i = 0; i < mList.Count; i++)
+            {
+                mDic[mList[i].Key] = true;
+            }
+            IsRun = false;
+            break;
+        }
+        if (mList == null) return;
         #region 按钮行
         EditorGUILayout.BeginHorizontal("box");
         //新建一个下拉列表
