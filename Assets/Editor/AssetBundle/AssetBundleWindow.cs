@@ -220,11 +220,12 @@ public class AssetBundleWindow : EditorWindow {
     {
         AssetBundleBuild[] arrBuild = new AssetBundleBuild[1];
         AssetBundleBuild build = new AssetBundleBuild();
-        //包名
+        //包名及后缀
         build.assetBundleName = string.Format("{0}. {1}",entity.Name, (entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase) ? "unity3d" : "assetbundle"));
+        //AssetBundle包的后缀名...写成下面两行代码会报错，放到上面就不会报错
+        //string variant = (entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase) ? "unity3d" : "assetbundle");
+        //build.assetBundleVariant = variant;
 
-        //AssetBundle包的后缀名
-        //build.assetBundleVariant = (entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase) ? "unity3d" : "assetbundle");
 
         //资源路径
         build.assetNames = entity.PathList.ToArray();
@@ -237,8 +238,8 @@ public class AssetBundleWindow : EditorWindow {
         {
             Directory.CreateDirectory(toPath);
         }
-        //BuildPipeline.BuildAssetBundles(toPath,arrBuild,BuildAssetBundleOptions.None,target);
-        BuildPipeline.BuildAssetBundles(toPath,BuildAssetBundleOptions.None, target);
+        //四个参数是按照第二个参数的格式来打包，第二个参数保存的是AssetBundle打包的名字、后缀、源文件地址等
+        BuildPipeline.BuildAssetBundles(toPath,arrBuild,BuildAssetBundleOptions.None,target);
     }
     /// <summary>
     /// 清空AssetBundle包回调(删除打包后的资源)

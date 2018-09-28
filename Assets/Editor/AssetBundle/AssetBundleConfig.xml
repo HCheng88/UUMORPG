@@ -2,11 +2,11 @@
 <Root>
   <AssetBundle>
     <Item Name="Role_MainPlayer" Tag="Role" Version="1" Size="0" ToPath="/Role/">
-      <Path Value="Resources\RolePrefab\Player\Role_MainPlayer.prefab"/>
+      <Path Value="Resources/RolePrefab/Player/Role_MainPlayer.prefab"/>
       
     </Item>
     <Item Name="test" Tag="Scence" Version="1" Size="0" ToPath="/Scence/">
-      <Path Value="Scence\test.unity"/>
+      <Path Value="Scence/test.unity"/>
     </Item>
   </AssetBundle>
 </Root>

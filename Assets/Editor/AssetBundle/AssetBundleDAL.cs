@@ -51,7 +51,7 @@ public class AssetBundleDAL  {
 
             foreach (XElement path in pathList)
             {
-                entity.PathList.Add(string.Format("Asset/{0}", path.Attribute("Value").Value));
+                entity.PathList.Add(string.Format("Assets/{0}", path.Attribute("Value").Value));
             }
             mList.Add(entity);
         }        
