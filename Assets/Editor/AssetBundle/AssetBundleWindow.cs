@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 /// <summary>
 /// AssetBundle管理窗口
 /// </summary>
@@ -96,6 +97,26 @@ public class AssetBundleWindow : EditorWindow {
 
         pos = EditorGUILayout.BeginScrollView(pos);
 
+        for(int i = 0; i < mList.Count; i++)
+        {
+            AssetBundleEntity entity = mList[i];
+            GUILayout.BeginHorizontal("box");       
+            mDic[entity.Key] = GUILayout.Toggle(mDic[entity.Key], "", GUILayout.Width(20));
+            GUILayout.Label(entity.Name);
+            GUILayout.Label(entity.Tag, GUILayout.Width(100));
+            GUILayout.Label(entity.ToPath, GUILayout.Width(200));
+            GUILayout.Label(entity.Version.ToString(), GUILayout.Width(100));
+            GUILayout.Label(entity.Size.ToString(), GUILayout.Width(100));
+            GUILayout.EndHorizontal();
+            foreach (string path in entity.PathList)
+            {
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Space(40);
+                GUILayout.Label(path);
+                GUILayout.EndHorizontal();
+            }
+        }
+
         EditorGUILayout.EndScrollView();
 
         GUILayout.EndVertical();
@@ -108,27 +129,128 @@ public class AssetBundleWindow : EditorWindow {
     /// </summary>
     private void OnSelectTagCallBack()
     {
-        Debug.Log(1);
+        switch (tagIndex)
+        {
+            case 0://All
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = true;
+                }
+                break;
+            case 1://Scence
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase);
+                }
+                break;
+            case 2://Role
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = entity.Tag.Equals("Role", StringComparison.CurrentCultureIgnoreCase);
+                }
+                break;
+            case 3://Effect
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = entity.Tag.Equals("Effect", StringComparison.CurrentCultureIgnoreCase);
+                }
+                break;
+            case 4://Audio
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = entity.Tag.Equals("Audio", StringComparison.CurrentCultureIgnoreCase);
+                }
+                break;
+            case 5://None
+                foreach (AssetBundleEntity entity in mList)
+                {
+                    mDic[entity.Key] = false;
+                }
+                break;
+
+            default:
+                break;
+        }
+        Debug.LogFormat("当前选择的Tag：{0}", arrTag[tagIndex]);
     }
     /// <summary>
     /// 选定Target回调（打包平台）
     /// </summary>
     private void OnSelectTargetCallBack()
     {
-        Debug.Log(2);
+        switch (buildTargetIndex)
+        {
+            case 0://Windows
+                target = BuildTarget.StandaloneWindows;
+                break;
+            case 1://Android
+                target = BuildTarget.Android;
+                break;
+            case 2://IOS
+                target = BuildTarget.iOS;
+                break;
+            default:
+                break;
+        }
+        Debug.LogFormat("当前选择的target：{0}", arrBuidTarget[buildTargetIndex]);
     }
     /// <summary>
     /// 打包回调
     /// </summary>
     private void OnAssetBundleCallBack()
     {
-        Debug.Log(3);
+        List<AssetBundleEntity> listNeed = new List<AssetBundleEntity>();
+        foreach (AssetBundleEntity entity in mList)
+        {
+            if (mDic[entity.Key])
+                listNeed.Add(entity);
+        }
+        for(int i = 0; i < listNeed.Count; i++)
+        {
+            Debug.LogFormat("正在打包{0}/{1}", i + 1, listNeed.Count);
+            BuildAssetBundle(listNeed[i]);
+        }
+        Debug.Log("打包完成");
+    }
+    /// <summary>
+    /// 打包方法
+    /// </summary>
+    /// <param name="entity"></param>
+    private void BuildAssetBundle(AssetBundleEntity entity)
+    {
+        AssetBundleBuild[] arrBuild = new AssetBundleBuild[1];
+        AssetBundleBuild build = new AssetBundleBuild();
+        //包名
+        build.assetBundleName = string.Format("{0}. {1}",entity.Name, (entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase) ? "unity3d" : "assetbundle"));
+
+        //AssetBundle包的后缀名
+        //build.assetBundleVariant = (entity.Tag.Equals("Scence", StringComparison.CurrentCultureIgnoreCase) ? "unity3d" : "assetbundle");
+
+        //资源路径
+        build.assetNames = entity.PathList.ToArray();
+
+        arrBuild[0] = build;
+        //资源打包保存路径
+        string toPath = Application.dataPath + "/../AssetBundle/" + arrBuidTarget[buildTargetIndex] + entity.ToPath;
+        //如果目标不存在，则创建文件夹
+        if (!Directory.Exists(toPath))
+        {
+            Directory.CreateDirectory(toPath);
+        }
+        //BuildPipeline.BuildAssetBundles(toPath,arrBuild,BuildAssetBundleOptions.None,target);
+        BuildPipeline.BuildAssetBundles(toPath,BuildAssetBundleOptions.None, target);
     }
     /// <summary>
     /// 清空AssetBundle包回调(删除打包后的资源)
     /// </summary>
     private void OnClearAssetBundleCallBack()
     {
-        Debug.Log(4);
+        string Path = Application.dataPath + "/../AssetBundle/" + arrBuidTarget[buildTargetIndex];
+        if (Directory.Exists(Path))
+        {
+            Directory.Delete(Path,true);
+        }
+
+        Debug.Log("删除成功");
     }
 }
