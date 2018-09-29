@@ -223,9 +223,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AssetBundle\AssetBundleLoad.cs" />
+    <Compile Include="Assets\Scripts\AssetBundle\AssetBundleLoadAsync.cs" />
+    <Compile Include="Assets\Scripts\AssetBundle\AssetBundleMgr.cs" />
     <Compile Include="Assets\Scripts\core\CRC16.cs" />
     <Compile Include="Assets\Scripts\core\EventDispatchet.cs" />
     <Compile Include="Assets\Scripts\core\IProto.cs" />
+    <Compile Include="Assets\Scripts\core\LocalFileMgr.cs" />
     <Compile Include="Assets\Scripts\core\MashRender\MeshLightmapSetting.cs" />
     <Compile Include="Assets\Scripts\core\MashRender\SerializedLightmapSetting.cs" />
     <Compile Include="Assets\Scripts\core\MMO_MemoryStream.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="Assets\Scripts\core\Sha\AbstractDBModel.cs" />
     <Compile Include="Assets\Scripts\core\Sha\AbstractEntity.cs" />
     <Compile Include="Assets\Scripts\core\Sha\ProdyctDBModel.cs" />
+    <Compile Include="Assets\Scripts\core\Singleton.cs" />
     <Compile Include="Assets\Scripts\core\SingletonMono.cs" />
     <Compile Include="Assets\Scripts\core\zlib.NET_104\source\Adler32.cs" />
     <Compile Include="Assets\Scripts\core\zlib.NET_104\source\Deflate.cs" />
@@ -261,6 +266,7 @@
     <Compile Include="Assets\Scripts\Proto\TestProto.cs" />
     <Compile Include="Assets\Scripts\Run.cs" />
     <Compile Include="Assets\Scripts\StringUtil.cs" />
+    <Compile Include="Assets\Scripts\TestAB.cs" />
     <Compile Include="Assets\test\MailTestMode.cs" />
     <Compile Include="Assets\test\TestHong.cs" />
   </ItemGroup>

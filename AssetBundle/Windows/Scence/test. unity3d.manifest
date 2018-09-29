@@ -1,0 +1,14 @@
+ManifestFileVersion: 0
+CRC: 2863146150
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd91b7754f212cb2a94916fd516486b6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Scence/test.unity
+Dependencies: []
